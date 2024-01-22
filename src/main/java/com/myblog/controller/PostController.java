@@ -1,7 +1,7 @@
 package com.myblog.controller;
 
-import com.myblog.domain.Post;
 import com.myblog.request.PostCreate;
+import com.myblog.response.PostResponse;
 import com.myblog.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +21,8 @@ public class PostController {
     }
 
     @GetMapping("/posts/{postId}")
-    public Post get(@PathVariable(name = "postId") Long id) {
-        Post post = postService.get(id);
-        return post;
+    public PostResponse get(@PathVariable(name = "postId") Long id) {
+        PostResponse response = postService.get(id);
+        return response;
     }
 }
