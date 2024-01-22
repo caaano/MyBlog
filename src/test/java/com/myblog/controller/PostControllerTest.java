@@ -136,17 +136,16 @@ class PostControllerTest {
     @DisplayName("글 여러개 조회")
     void test5() throws Exception {
         // given
-        Post post1 = Post.builder()
+        Post post1 = postRepository.save(Post.builder()
                 .title("title_1")
                 .content("content_1")
-                .build();
-        postRepository.save(post1);
+                .build());
 
-        Post post2 = Post.builder()
+
+        Post post2 = postRepository.save(Post.builder()
                 .title("title_2")
                 .content("content_2")
-                .build();
-        postRepository.save(post2);
+                .build());
 
         // expected (when + then)
         mockMvc.perform(get("/posts")
@@ -157,6 +156,9 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.[0].id").value(post1.getId()))
                 .andExpect(jsonPath("$.[0].title").value("title_1"))
                 .andExpect(jsonPath("$.[0].content").value("content_1"))
+                .andExpect(jsonPath("$.[1].id").value(post2.getId()))
+                .andExpect(jsonPath("$.[1].title").value("title_2"))
+                .andExpect(jsonPath("$.[1].content").value("content_2"))
                 .andDo(print());
     }
 }
