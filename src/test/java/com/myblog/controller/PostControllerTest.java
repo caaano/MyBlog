@@ -167,9 +167,9 @@ class PostControllerTest {
         // given
         List<Post> requestPosts = IntStream.range(0, 20)
                 .mapToObj(i -> Post.builder()
-                            .title("foo" + i)
-                            .content("bar" + i)
-                            .build())
+                        .title("foo" + i)
+                        .content("bar" + i)
+                        .build())
                 .collect(Collectors.toList());
 
         postRepository.saveAll(requestPosts);
@@ -205,5 +205,23 @@ class PostControllerTest {
                         .content(objectMapper.writeValueAsString(postEdit)))
                 .andExpect(status().isOk())
                 .andDo(print());
+    }
+
+    @Test
+    @DisplayName("게시글 삭제")
+    void test8() throws Exception {
+        // given
+        Post post = Post.builder()
+                .title("진기")
+                .content("반포자이")
+                .build();
+        postRepository.save(post);
+
+        // expected
+        mockMvc.perform(delete("/posts/{postId}", post.getId())
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print());
+
     }
 }
