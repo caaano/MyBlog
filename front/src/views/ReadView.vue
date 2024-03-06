@@ -36,7 +36,7 @@ onMounted(() => {
 
       <div class="sub d-flex">
         <div class="category">개발</div>
-        <div class="regDate">2022-06-01 23:59:59</div>
+        <div class="regDate">2024-03-06 23:59:59</div>
       </div>
     </el-col>
   </el-row>

@@ -40,7 +40,7 @@ const edit = () => {
   </div>
 
   <div class="mt-2 d-flex justify-content-end">
-    <el-button type="warning" @click="edit()">수정완료</el-button>
+    <el-button type="warning" @click="edit()">수정 완료</el-button>
   </div>
 </template>
 
