@@ -1,9 +1,8 @@
 package com.myblog.controller;
 
-import com.myblog.domain.User;
-import com.myblog.exception.InvalidSigninInformation;
-import com.myblog.repository.UserRepository;
 import com.myblog.request.Login;
+import com.myblog.response.SessionResponse;
+import com.myblog.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,14 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final UserRepository userRepository;
+    private final AuthService authService;
 
     @PostMapping("/auth/login")
-    public User login(@RequestBody Login login) {
-        log.info(">>>login={}", login);
-
-        User user = userRepository.findByEmailAndPassword(login.getEmail(), login.getPassword())
-                .orElseThrow(InvalidSigninInformation::new);
-        return user;
+    public SessionResponse login(@RequestBody Login login) {
+        String accessToken = authService.signin(login);
+        return new SessionResponse(accessToken);
     }
 }
