@@ -1,6 +1,7 @@
 package com.myblog.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.myblog.domain.Session;
 import com.myblog.domain.User;
 import com.myblog.repository.SessionRepository;
 import com.myblog.repository.UserRepository;
@@ -17,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -127,6 +129,48 @@ class AuthControllerTest {
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.accessToken", Matchers.notNullValue()))
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("로그인 후 권한이 필요한 페이지에 접속한다./foo")
+    void test4() throws Exception {
+        // given
+        User user = userRepository.save(User.builder()
+                .name("Jingi")
+                .email("wlsrl0515@naver.com")
+                .password("1234")
+                .build());
+        Session session = user.addSession();
+        userRepository.save(user);
+
+        //expected
+        mockMvc.perform(get("/foo")
+                        .header("Authorization", session.getAccessToken())
+                        .contentType(APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("로그인 후 검증되지 않은 세션값으로 권한이 필요한 페이지에 접속할 수 없다.")
+    void test5() throws Exception {
+        // given
+        User user = userRepository.save(User.builder()
+                .name("Jingi")
+                .email("wlsrl0515@naver.com")
+                .password("1234")
+                .build());
+        Session session = user.addSession();
+        userRepository.save(user);
+
+        //expected
+        mockMvc.perform(get("/foo")
+                        .header("Authorization", session.getAccessToken() + "-other")
+                        .contentType(APPLICATION_JSON)
+                )
+                .andExpect(status().isUnauthorized())
                 .andDo(print());
     }
 

@@ -1,11 +1,11 @@
 package com.myblog.repository;
 
-import com.myblog.domain.User;
+import com.myblog.domain.Session;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;
 
-public interface SessionRepository extends CrudRepository<User, Long> {
+public interface SessionRepository extends CrudRepository<Session, Long> {
 
-    Optional<User> findByEmailAndPassword(String email, String password);
+    Optional<Session> findByAccessToken(String accessToken);
 }
