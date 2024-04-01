@@ -22,6 +22,7 @@ public class AuthResolver implements HandlerMethodArgumentResolver {
 
     private static final String KEY = "bVsMNSmHS7ZNBdtBrdH6iO4BAZdPMKgA5O3zNNi4+Bg=";
     private final SessionRepository sessionRepository;
+    private final AppConfig appConfig;
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
@@ -30,6 +31,8 @@ public class AuthResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+        log.info(">>>>>{}", appConfig.toString());
+
         String jws = webRequest.getHeader("Authorization");
         if (jws == null || jws.equals("")) {
             throw new Unauthorized();
