@@ -1,5 +1,6 @@
 package com.myblog.controller;
 
+import com.myblog.config.AppConfig;
 import com.myblog.request.Login;
 import com.myblog.response.SessionResponse;
 import com.myblog.service.AuthService;
@@ -12,25 +13,26 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.crypto.SecretKey;
-import java.util.Base64;
+import java.util.Date;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 public class AuthController {
 
-    private static final String KEY = "bVsMNSmHS7ZNBdtBrdH6iO4BAZdPMKgA5O3zNNi4+Bg=";
     private final AuthService authService;
+    private final AppConfig appConfig;
 
     @PostMapping("/auth/login")
     public SessionResponse login(@RequestBody Login login) {
         Long userId = authService.signin(login);
 
-        SecretKey key = Keys.hmacShaKeyFor(Base64.getDecoder().decode(KEY));
+        SecretKey key = Keys.hmacShaKeyFor(appConfig.getJwtKey());
 
         String jws = Jwts.builder()
                 .subject(String.valueOf(userId))
                 .signWith(key)
+                .setIssuedAt(new Date()) // 발급일
                 .compact();
 
         return new SessionResponse(jws);

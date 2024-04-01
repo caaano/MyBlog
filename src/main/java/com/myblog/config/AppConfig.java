@@ -3,17 +3,19 @@ package com.myblog.config;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.util.Base64;
+
 @Data
 @ConfigurationProperties(prefix = "myblog")
 public class AppConfig {
 
-    public Hello hello;
+    private byte[] jwtKey;
 
-    @Data
-    public static class Hello {
-        public String name;
-        public String home;
-        public String hobby;
-        public Long age;
+    public void setJwtKey(String jwtKey) {
+        this.jwtKey = Base64.getDecoder().decode(jwtKey);
+    }
+
+    public byte[] getJwtKey() {
+        return jwtKey;
     }
 }
