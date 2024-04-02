@@ -2,12 +2,16 @@ package com.myblog.service;
 
 import com.myblog.domain.Session;
 import com.myblog.domain.User;
+import com.myblog.exception.AlreadyExistsEmailException;
 import com.myblog.exception.InvalidSigninInformation;
 import com.myblog.repository.UserRepository;
 import com.myblog.request.Login;
+import com.myblog.request.Signup;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,5 +26,20 @@ public class AuthService {
         Session session = user.addSession();
 
         return user.getId();
+    }
+
+    public void signup(Signup signup) {
+        Optional<User> userOptional = userRepository.findByEmail(signup.getEmail());
+        if (userOptional.isPresent()) {
+            throw new AlreadyExistsEmailException();
+        }
+
+       var user = User.builder()
+                .name(signup.getName())
+                .password(signup.getPassword())
+                .email(signup.getEmail())
+                .build();
+
+        userRepository.save(user);
     }
 }

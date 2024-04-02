@@ -11,9 +11,9 @@ spring:
     driver-class-name: org.h2.Driver
   jpa:
     defer-datasource-initialization: true
-  sql:
-    init:
-      mode: always
+#  sql:  // 회원가입 기능을 만들거기 때문에 사용하지 않아도 됨
+#    init:
+#      mode: never
   data:
     web:
       pageable:

@@ -2,6 +2,7 @@ package com.myblog.controller;
 
 import com.myblog.config.AppConfig;
 import com.myblog.request.Login;
+import com.myblog.request.Signup;
 import com.myblog.response.SessionResponse;
 import com.myblog.service.AuthService;
 import io.jsonwebtoken.Jwts;
@@ -36,5 +37,10 @@ public class AuthController {
                 .compact();
 
         return new SessionResponse(jws);
+    }
+
+    @PostMapping("/auth/signup")
+    public void signup(@RequestBody Signup signup) {
+        authService.signup(signup);
     }
 }

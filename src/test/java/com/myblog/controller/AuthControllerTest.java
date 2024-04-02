@@ -6,6 +6,7 @@ import com.myblog.domain.User;
 import com.myblog.repository.SessionRepository;
 import com.myblog.repository.UserRepository;
 import com.myblog.request.Login;
+import com.myblog.request.Signup;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -174,4 +175,21 @@ class AuthControllerTest {
                 .andDo(print());
     }
 
+    @Test
+    @DisplayName("회원가입")
+    void test6() throws Exception {
+        // given
+        Signup signup = Signup.builder()
+                .email("wlsrl0515@naver.com")
+                .password("1234")
+                .name("Jingi")
+                .build();
+
+        //expected
+        mockMvc.perform(post("/auth/signup")
+                        .content(objectMapper.writeValueAsString(signup))
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
 }
