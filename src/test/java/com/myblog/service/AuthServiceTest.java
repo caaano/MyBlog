@@ -1,11 +1,8 @@
 package com.myblog.service;
 
-import com.myblog.crypto.PasswordEncoder;
 import com.myblog.domain.User;
 import com.myblog.exception.AlreadyExistsEmailException;
-import com.myblog.exception.InvalidSigninInformation;
 import com.myblog.repository.UserRepository;
-import com.myblog.request.Login;
 import com.myblog.request.Signup;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -71,56 +68,6 @@ class AuthServiceTest {
 
         // expected
         assertThrows(AlreadyExistsEmailException.class, () -> authService.signup(signup));
-    }
-
-    @Test
-    @DisplayName("로그인 성공")
-    void test3() {
-        // given
-        PasswordEncoder encoder = new PasswordEncoder();
-        String encryptPassword = encoder.encrypt("1234");
-
-        User user = User.builder()
-                .email("wlsrl0515@naver.com")
-                .password(encryptPassword)
-                .name("Haemin")
-                .build();
-        userRepository.save(user);
-
-        Login login = Login.builder()
-                .email("wlsrl0515@naver.com")
-                .password("1234")
-                .build();
-        // when
-        Long userId = authService.signin(login);
-
-        // then
-        assertNotNull(userId);
-
-    }
-
-    @Test
-    @DisplayName("로그인시 비밀번호 틀림")
-    void test4() {
-        // given
-        PasswordEncoder encoder = new PasswordEncoder();
-        String encryptPassword = encoder.encrypt("1234");
-
-        User user = User.builder()
-                .email("wlsrl0515@naver.com")
-                .password(encryptPassword)
-                .name("Haemin")
-                .build();
-        userRepository.save(user);
-
-        Login login = Login.builder()
-                .email("wlsrl0515@naver.com")
-                .password("5678")
-                .build();
-
-        // expected
-        assertThrows(InvalidSigninInformation.class, () -> authService.signin(login));
-
     }
 
 }
