@@ -1,6 +1,6 @@
 package com.myblog.service;
 
-import com.myblog.domain.Session;
+import com.myblog.crypto.PasswordEncoder;
 import com.myblog.domain.User;
 import com.myblog.exception.AlreadyExistsEmailException;
 import com.myblog.exception.InvalidSigninInformation;
@@ -8,7 +8,6 @@ import com.myblog.repository.UserRepository;
 import com.myblog.request.Login;
 import com.myblog.request.Signup;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,9 +21,15 @@ public class AuthService {
 
     @Transactional
     public Long signin(Login login) {
-        User user = userRepository.findByEmailAndPassword(login.getEmail(), login.getPassword())
+
+        User user = userRepository.findByEmail(login.getEmail())
                 .orElseThrow(InvalidSigninInformation::new);
-        Session session = user.addSession();
+
+        PasswordEncoder encoder = new PasswordEncoder();
+        var matches = encoder.matches(login.getPassword(), user.getPassword());
+        if (!matches) {
+            throw new InvalidSigninInformation();
+        }
 
         return user.getId();
     }
@@ -35,9 +40,8 @@ public class AuthService {
             throw new AlreadyExistsEmailException();
         }
 
-        SCryptPasswordEncoder encoder = new SCryptPasswordEncoder(16, 8, 1, 32, 64);
-
-        String encryptedPassword = encoder.encode(signup.getPassword());
+        PasswordEncoder encoder = new PasswordEncoder();
+        String encryptedPassword = encoder.encrypt(signup.getPassword());
 
         var user = User.builder()
                 .email(signup.getEmail())
