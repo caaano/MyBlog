@@ -1,14 +1,6 @@
 ### 로그인
 
 POST http://localhost:8080/auth/login
-Content-Type: application/json
+Content-Type: application/x-www-form-urlencoded
 
-{
-  "email": "wlsrl0515@naver.com",
-  "password": "1234"
-}
-
-#### 인증 페이지 요청
-# GET http://localhost:8080/foo
-#Content-Type: application/json
-#cookie: SESSION=2777e10b-d5a1-467a-83b8-ef0d5d99bd72;
+username=Jingi&password=1234
