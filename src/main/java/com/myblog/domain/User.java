@@ -20,9 +20,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String name; // 실명
 
-    private String email;
+    private String email; // 아이디
 
     private String password;
 
