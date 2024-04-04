@@ -6,15 +6,18 @@ Content-Type: application/json
 {
   "name": "Jingi",
   "email": "wlsrl515@gamil.com",
-  "password": "1234"
+  "password": "12345"
 }
 
 ### 로그인
 
 POST http://localhost:8080/auth/login
-Content-Type: application/x-www-form-urlencoded
+Content-Type: application/json
 
-username=wlsrl515@gmail.com&password=1234&remember=1
+{
+  "email": "wlsrl515@gmail.com",
+  "password": "12345"
+}
 
 ### 사용자 페이지
 
