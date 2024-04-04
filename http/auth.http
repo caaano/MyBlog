@@ -5,17 +5,24 @@ Content-Type: application/json
 
 {
   "name": "Jingi",
-  "email": "wlsrl0515@naver.com",
+  "email": "wlsrl515@gamil.com",
   "password": "1234"
 }
-
 
 ### 로그인
 
 POST http://localhost:8080/auth/login
 Content-Type: application/x-www-form-urlencoded
 
-username=wlsrl0515@naver.com&password=1234&remember=1
+username=wlsrl515@gmail.com&password=1234&remember=1
+
+### 사용자 페이지
+
+GET http://localhost:8080/user
+
+### 관리자 페이지
+
+GET http://localhost:8080/admin
 
 
 ### 메인 페이지
