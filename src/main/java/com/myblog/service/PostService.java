@@ -3,7 +3,9 @@ package com.myblog.service;
 import com.myblog.domain.Post;
 import com.myblog.domain.PostEditor;
 import com.myblog.exception.PostNotFound;
+import com.myblog.exception.UserNotFound;
 import com.myblog.repository.PostRepository;
+import com.myblog.repository.UserRepository;
 import com.myblog.request.PostCreate;
 import com.myblog.request.PostEdit;
 import com.myblog.request.PostSearch;
@@ -21,10 +23,15 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PostService {
 
+    private final UserRepository userRepository;
     private final PostRepository postRepository;
 
-    public void write(PostCreate postCreate) {
+    public void write(Long userId, PostCreate postCreate) {
+        var user = userRepository.findById(userId)
+                .orElseThrow(UserNotFound::new);
+
         Post post = Post.builder()
+                .user(user)
                 .title(postCreate.getTitle())
                 .content((postCreate.getContent()))
                 .build();
