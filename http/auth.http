@@ -5,8 +5,8 @@ Content-Type: application/json
 
 {
   "name": "Jingi",
-  "email": "wlsrl515@gamil.com",
-  "password": "12345"
+  "email": "wlsrl515@gmail.com",
+  "password": "1234!"
 }
 
 ### 로그인
@@ -16,7 +16,7 @@ Content-Type: application/json
 
 {
   "email": "wlsrl515@gmail.com",
-  "password": "12345"
+  "password": "1234!"
 }
 
 ### 사용자 페이지
