@@ -1,8 +1,10 @@
 package com.myblog.service;
 
 import com.myblog.domain.Post;
+import com.myblog.domain.User;
 import com.myblog.exception.PostNotFound;
 import com.myblog.repository.PostRepository;
+import com.myblog.repository.UserRepository;
 import com.myblog.request.PostCreate;
 import com.myblog.request.PostEdit;
 import com.myblog.request.PostSearch;
@@ -28,22 +30,33 @@ class PostServiceTest {
     @Autowired
     private PostRepository postRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @BeforeEach
     void clean() {
         postRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     @Test
     @DisplayName("글 작성")
     void test1() {
         // given
+        var user = User.builder()
+                .name("호돌맨")
+                .email("wlsrl515@gmail.com")
+                .password("1234!")
+                .build();
+        userRepository.save(user);
+
         PostCreate postCreate = PostCreate.builder()
                 .title("제목입니다.")
                 .content("내용입니다.")
                 .build();
 
         // when
-        postService.write(postCreate);
+        postService.write(user.getId(), postCreate);
 
         // then
         assertEquals(1L, postRepository.count());
